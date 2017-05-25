@@ -3,17 +3,22 @@ class IdleTimer {
     this.idleAction = idleAction;
     this.idleTime = idleTime;
 
-    setInterval(() => this.handleIdle(), this.idleTime);
+    this.restartTimer();
+  }
+
+  restartTimer() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+    this.timer = setInterval(() => this.handleIdle(), this.idleTime);
   }
 
   handleIdle() {
-    if (!this.activity) {
-      this.idleAction();
-    }
+    this.idleAction();
   }
 
   handleActivity() {
-    this.activity = true;
+    this.restartTimer();
   }
 }
 
