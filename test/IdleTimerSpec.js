@@ -34,6 +34,16 @@ describe('IdleTimer', () => {
       it('should call the passed in idle action', () => {
         expect(idleAction.callCount).to.equal(1);
       });
+
+      describe('when idle time has passed again', () => {
+        beforeEach(() => {
+          clock.tick(IDLE_TIME);
+        });
+
+        it('should call the passed in idle action', () => {
+          expect(idleAction.callCount).to.equal(2);
+        });
+      });
     });
 
     describe('and there has been activity before idle time has passed', () => {
@@ -46,6 +56,26 @@ describe('IdleTimer', () => {
       it('should not call the passed in idle action', () => {
         expect(idleAction.callCount).to.equal(0);
       });
+
+      describe('when less than the idle time has passed since the last activity', () => {
+        beforeEach(() => {
+          clock.tick(IDLE_TIME - 2);
+        });
+
+        it('should not call the passed in idle action', () => {
+          expect(idleAction.callCount).to.equal(0);
+        });
+      });
+
+      describe('when idle time has passed since the last activity', () => {
+        beforeEach(() => {
+          clock.tick(IDLE_TIME);
+        });
+
+        it('should call the passed in idle action', () => {
+          expect(idleAction.callCount).to.equal(1);
+        });
+      });
     });
 
     describe('and there has been activity after idle time has passed', () => {
@@ -56,6 +86,16 @@ describe('IdleTimer', () => {
 
       it('should call the passed in idle action', () => {
         expect(idleAction.callCount).to.equal(1);
+      });
+
+      describe('when idle time has passed again', () => {
+        beforeEach(() => {
+          clock.tick(IDLE_TIME);
+        });
+
+        it('should call the passed in idle action', () => {
+          expect(idleAction.callCount).to.equal(2);
+        });
       });
     });
   });
